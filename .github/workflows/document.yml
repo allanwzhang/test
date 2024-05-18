@@ -24,10 +24,8 @@ jobs:
 
     - name: Update README
       run: |
-        value=$(cat response.txt)
-        readme_content=$(cat README.md)
-        updated_readme_content=$(echo "$readme_content" | sed "s/<!-- api-value -->/${value}/g")
-        echo "$updated_readme_content" > README.md
+        echo "\n## Documentation:\n" >> README.md
+        cat response.txt >> README.md
 
     - name: Commit and push changes
       run: |

@@ -19,15 +19,15 @@ jobs:
         API_KEY: ${{ secrets.API_KEY }}
       run: |
         response=$(curl https://api.awanllm.com/v1/chat/completions -H "Content-Type: application/json" -H "Authorization: Bearer $API_KEY" -d '{"model": "Awanllm-Llama-3-8B-Dolfin","messages": [  {"role": "user", "content": "What is the meaning of life?"}]}')
-        echo "response=$response" >> $GITHUB_ENV
-        content=$(echo $response | jq -r '.choices[0].message.content')
-        echo "content=$content" >> $GITHUB_ENV
+        response_content=$(echo $response | jq -r '.choices[0].message.content')
+        encoded_response=$(echo "$response_content" | base64)
+        echo "encoded_response=$encoded_response" >> $GITHUB_ENV
 
-    - name: Update README
+    - name: Decode response and update README
       run: |
-        value="${{ env.content }}"
+        decoded_response=$(echo ${{ env.encoded_response }} | base64 --decode)
         readme_content=$(cat README.md)
-        updated_readme_content=$(echo "$readme_content" | sed "s/<!-- api-value -->/${value}/g")
+        updated_readme_content=$(echo "$readme_content" | sed "s/<!-- api-value -->/${decoded_response}/g")
         echo "$updated_readme_content" > README.md
 
     - name: Commit and push changes

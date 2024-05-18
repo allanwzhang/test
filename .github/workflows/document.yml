@@ -24,7 +24,8 @@ jobs:
 
     - name: Update README
       run: |
-        mv response.txt README.md
+        echo "# Documentation" > README.md
+        cat response.txt >> README.md
 
     - name: Commit and push changes
       run: |

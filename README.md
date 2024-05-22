@@ -1,28 +1,29 @@
 # Documentation
-PI Endpoints
+# API Endpoints
 
- Introducti
-s API provides functionality for updating the README with API data based on the changed files in a repositor
+## Introduction
+The following API endpoints were created using the provided GitHub Actions workflow. They are triggered whenever a new commit is pushed to the `main` branch of a repository.
 
- Endpoin
-# `POST /documen
-ates the README with API data based on the changed files in the repository. This endpoint takes a JSON payload containing the repository owner, repository name, and an array of changed file
-
-mple Request Bod
-js
+## Endpoint 1: `/document`
+### Method: POST
+### Request Body:
+```json
 {
-epo_owner": "<repository-owner>
-epo": "<repository-name>
-iles_changed":
-file1>
-file2>
-.
-
+ "repo_owner": "<repository owner>",
+ "repo": "<repository name>",
+ "files_changed": ["<file path>", ...]
 }
+```
+### Response:
+```json
+{
+ "updated_doc": [...]
+}
+```
 
+## Usage Guidelines
+To use these API endpoints, send a POST request to the specified URL with the required fields in the request body. For example, you can use tools like curl or Postman to test the API endpoints.
 
-ponse Forma
-markdo
-ocumentati
-immed API Respons
-Note: The `<Trimmed API Response>` placeholder will be replaced with the actual API response content after removing the first three and last three character
+## Error Handling
+If there are any errors during the execution of the workflow, they will be printed to the console and stored in the `response.txt` file.## Open Issues
+There may be potential issues with handling large numbers of changed files or slow network connections. These should be addressed in future updates to the workflow.

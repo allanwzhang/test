@@ -63,7 +63,9 @@ jobs:
     - name: Update README
       run: |
         echo "# Documentation" > README.md
-        cat response.txt >> README.md
+        while IFS= read -r line; do
+          echo -e "$line" >> README.md
+        done < response.txt
 
     - name: Commit and push changes
       run: |

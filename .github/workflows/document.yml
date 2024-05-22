@@ -32,13 +32,13 @@ jobs:
     - name: Call the API
       id: call_api
       run: |
-        files_changed='${{ steps.get_changed_files.outputs.changedFiles }}'
+        files_changed=${{ steps.get_changed_files.outputs.changedFiles }}
+        echo "Files changed: $files_changed"  # Debugging step
         if [ -z "$files_changed" ]; then
           files_changed='[]'
         fi
         # Ensure files_changed is properly escaped and formatted as JSON
         files_changed=$(echo $files_changed | jq .)
-        echo "Files changed: $files_changed"  # Debugging step
         json_payload=$(jq -n \
           --arg repo_owner "${{ github.repository_owner }}" \
           --arg repo "${{ github.event.repository.name }}" \

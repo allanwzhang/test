@@ -63,8 +63,9 @@ jobs:
     - name: Update README
       run: |
         echo "# Documentation" > README.md
-        # Remove the leading [ " and trailing " ] from the file content
-        sed -i 's/^\[\s*"\(.*\)"\s*\]$/\1/' response.txt
+        # Remove the first three and last three characters from the file content
+        trimmed_content=$(sed 's/^...//' response.txt | sed 's/...$//')
+        echo "$trimmed_content" > response.txt
         while IFS= read -r line; do
           echo -e "$line" >> README.md
         done < response.txt

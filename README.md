@@ -1,30 +1,33 @@
 # Documentation
 [
-"## Introduction
-This API endpoint is used to update the README file of a repository based on changes made in the repository. It triggers whenever there are new commits pushed to the `main` branch.
+# API Endpoints
+This API endpoint allows users to update the README file with dynamic information retrieved from an external API. The endpoint takes in a JSON payload containing the repository owner, repository name, and list of changed files.
 
-## Endpoints
-### GET /document
-Returns the updated README file of the repository with information about the latest changes made.
-
-#### Parameters
-* None
-
-#### Responses
-* **200 OK**: The updated README file.
-* **404 Not Found**: If the repository or branch does not exist.
-
-### POST /document
-Updates the README file with information about the latest changes made in the repository.
-
-#### Request Body
-* **repoOwner**: The owner of the repository.
-* **repo**: The name of the repository.
-* **filesChanged**: An array of strings representing the names of changed files.
-
-#### Responses
-* **201 Created**: The updated README file.
-* **400 Bad Request**: If the request body is malformed or missing required parameters.
-* **500 Internal Server Error**: If there was an error processing the request.## Authentication
-Authentication is handled through GitHub tokens. Set the environment variable `GITHUB_TOKEN` to your personal access token before making requests
+## Request Method: POST
+### URL: `https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document`
+#### Headers:
+* Content-Type: application/json
+#### Body:
+```json
+{
+ \"repo_owner\": \"<repository-owner>\",
+ \"repo\": \"<repository-name>\",
+ \"files_changed\": [
+ {
+ \"filename\": \"<file1>\"
+ },
+ {
+ \"filename\": \"<file2>\"
+ }
+ ]
+}
+```
+#### Response:
+The API returns a JSON object containing the updated documentation for the specified repository.
+```json
+{
+ \"updated_doc\": \"...\",
+ ...
+}
+```Note that the `updated_doc` field contains the actual updated documentation
 ]

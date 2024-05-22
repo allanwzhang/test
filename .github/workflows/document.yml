@@ -29,12 +29,17 @@ jobs:
           console.log("Changed files: ", changedFiles);  // Print changed files for debugging
           return { changedFiles: JSON.stringify(changedFiles) };
 
-
     - name: Call the API
       id: call_api
       run: |
-        response=$(curl https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document -H "Content-Type: application/json" -d -d '{"repo_owner": "ChangePlusPlusVandy", "repo": "fl-backend", "files_changed": ["controllers/auth-controller.ts"]}')
-        response_content=$(echo $response | jq -r '.choices[0].message.content')
+        files_changed='${{ steps.get_changed_files.outputs.changedFiles }}'
+        json_payload=$(jq -n \
+          --arg repo_owner "${{ github.repository_owner }}" \
+          --arg repo "${{ github.event.repository.name }}" \
+          --argjson files_changed "$files_changed" \
+          '{repo_owner: $repo_owner, repo: $repo, files_changed: $files_changed}')
+        response=$(curl https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document -H "Content-Type: application/json" -d "$json_payload")
+        response_content=$(echo $response | jq -r '.updated_doc')
         echo "$response_content" > response.txt
 
     - name: Update README

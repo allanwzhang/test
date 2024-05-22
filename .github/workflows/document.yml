@@ -14,40 +14,30 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get Changed Files and Call API
-      id: get_changed_files_and_call_api
-      uses: actions/github-script@v6
-      with:
-        script: |
-          const { owner, repo } = context.repo;
-          const commitSha = context.sha;
-          const commit = await github.rest.repos.getCommit({
-            owner,
-            repo,
-            ref: commitSha
-          });
-          const changedFiles = commit.data.files.map(file => file.filename);
-          console.log("Changed files: ", changedFiles);  // Print changed files for debugging
+      run: |
+        # Get changed files
+        changed_files=$(git diff --name-only HEAD~1 HEAD)
+        echo "Changed files: $changed_files"  # Debugging step
 
-          // Prepare the JSON payload
-          const jsonPayload = {
-            repo_owner: owner,
-            repo: repo,
-            files_changed: changedFiles
-          };
+        # Prepare JSON payload
+        files_changed=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+        json_payload=$(jq -n \
+          --arg repo_owner "${{ github.repository_owner }}" \
+          --arg repo "${{ github.event.repository.name }}" \
+          --argjson files_changed "$files_changed" \
+          '{repo_owner: $repo_owner, repo: $repo, files_changed: $files_changed}')
+        echo "JSON Payload: $json_payload"  # Debugging step
 
-          const response = await require('axios').post('https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document', jsonPayload, {
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          const responseContent = response.data.updated_doc;
-          console.log("API Response: ", responseContent);  // Debugging step
-          return { responseContent: responseContent };
+        # Call the API
+        response=$(curl -s -X POST https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document -H "Content-Type: application/json" -d "$json_payload")
+        echo "API Response: $response"  # Debugging step
+        response_content=$(echo $response | jq -r '.updated_doc')
+        echo "$response_content" > response.txt
 
     - name: Update README
       run: |
         echo "# Documentation" > README.md
-        echo "${{ steps.get_changed_files_and_call_api.outputs.responseContent }}" >> README.md
+        cat response.txt >> README.md
 
     - name: Commit and push changes
       run: |

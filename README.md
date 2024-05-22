@@ -1,33 +1,28 @@
 # Documentation
-[
-# API Endpoints
-This API endpoint allows users to update the README file with dynamic information retrieved from an external API. The endpoint takes in a JSON payload containing the repository owner, repository name, and list of changed files.
+PI Endpoints
 
-## Request Method: POST
-### URL: `https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document`
-#### Headers:
-* Content-Type: application/json
-#### Body:
-```json
+ Introducti
+s API provides functionality for updating the README with API data based on the changed files in a repositor
+
+ Endpoin
+# `POST /documen
+ates the README with API data based on the changed files in the repository. This endpoint takes a JSON payload containing the repository owner, repository name, and an array of changed file
+
+mple Request Bod
+js
 {
- \"repo_owner\": \"<repository-owner>\",
- \"repo\": \"<repository-name>\",
- \"files_changed\": [
- {
- \"filename\": \"<file1>\"
- },
- {
- \"filename\": \"<file2>\"
- }
- ]
+epo_owner": "<repository-owner>
+epo": "<repository-name>
+iles_changed":
+file1>
+file2>
+.
+
 }
-```
-#### Response:
-The API returns a JSON object containing the updated documentation for the specified repository.
-```json
-{
- \"updated_doc\": \"...\",
- ...
-}
-```Note that the `updated_doc` field contains the actual updated documentation
-]
+
+
+ponse Forma
+markdo
+ocumentati
+immed API Respons
+Note: The `<Trimmed API Response>` placeholder will be replaced with the actual API response content after removing the first three and last three character

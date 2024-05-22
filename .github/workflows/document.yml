@@ -29,9 +29,6 @@ jobs:
           console.log("Changed files: ", changedFiles);  // Print changed files for debugging
           return { changedFiles: JSON.stringify(changedFiles) };
 
-    - name: Print Changed Files
-      run: echo "Changed files: ${{ steps.get_changed_files.outputs.changedFiles }}"
-
     - name: Call the API
       id: call_api
       env:

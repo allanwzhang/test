@@ -18,11 +18,14 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const changedFiles = await github.rest.repos.listCommitFiles({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            ref: context.sha
-          }).then(files => files.data.map(file => file.filename));
+          const { owner, repo } = context.repo;
+          const commitSha = context.sha;
+          const commit = await github.rest.repos.getCommit({
+            owner,
+            repo,
+            ref: commitSha
+          });
+          const changedFiles = commit.data.files.map(file => file.filename);
           console.log("Changed files: ", changedFiles);  // Print changed files for debugging
           return { changedFiles: JSON.stringify(changedFiles) };
 

@@ -29,7 +29,6 @@ jobs:
           console.log("Changed files: ", changedFiles);  // Print changed files for debugging
           const fs = require('fs');
           fs.writeFileSync('changedFiles.txt', JSON.stringify(changedFiles));
-          return { changedFiles: changedFilesOutput };
 
     - name: Read Changed Files
       id: read_changed_files

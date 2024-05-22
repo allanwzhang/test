@@ -13,23 +13,39 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Get Changed Files and Call API
-      run: |
-        # Get changed files
-        changed_files=$(git diff --name-only HEAD~1 HEAD)
-        echo "Changed files: $changed_files"  # Debugging step
+    - name: Get Changed Files
+      id: get_changed_files
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const { owner, repo } = context.repo;
+          const commitSha = context.sha;
+          const commit = await github.rest.repos.getCommit({
+            owner,
+            repo,
+            ref: commitSha
+          });
+          const changedFiles = commit.data.files.map(file => file.filename);
+          console.log("Changed files: ", changedFiles);  // Print changed files for debugging
+          echo "changedFiles" >> $GITHUB_OUTPUT
 
-        # Prepare JSON payload
-        files_changed=$(echo "$changed_files" | jq -R -s -c 'split("\n") | map(select(length > 0))')
+    - name: Call the API
+      id: call_api
+      run: |
+        files_changed=${{ steps.get_changed_files.outputs.* }}
+        echo "Files changed: $files_changed"  # Debugging step
+        if [ -z "$files_changed" ]; then
+          files_changed='[]'
+        fi
+        # Ensure files_changed is properly escaped and formatted as JSON
+        files_changed=$(echo $files_changed | jq .)
         json_payload=$(jq -n \
           --arg repo_owner "${{ github.repository_owner }}" \
           --arg repo "${{ github.event.repository.name }}" \
           --argjson files_changed "$files_changed" \
           '{repo_owner: $repo_owner, repo: $repo, files_changed: $files_changed}')
         echo "JSON Payload: $json_payload"  # Debugging step
-
-        # Call the API
-        response=$(curl -s -X POST https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document -H "Content-Type: application/json" -d "$json_payload")
+        response=$(curl https://docubot-llpjixmpp-allanwzhangs-projects.vercel.app/document -H "Content-Type: application/json" -d "$json_payload")
         echo "API Response: $response"  # Debugging step
         response_content=$(echo $response | jq -r '.updated_doc')
         echo "$response_content" > response.txt

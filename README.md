@@ -1,12 +1,21 @@
 # Documentation
 [
-  "Here is a sample API endpoint for the given code:
-API Endpoint: /
-Method: GET
-Description: Returns a simple \"Hello World!\" message.
-Response: 
-- Content-Type: text/plain
-- Body: Hello World! Please work!
+  "Here's an example of what the API endpoint documentation might look like:
 
-This API endpoint responds with a basic greeting when accessed via HTTP GET request. It serves as a starting point for further development of the API."
+**GET /bin /imagegeneration /lost+found /mnt /run /sbin /snap Request Method: GET
+* Response Code: 200 OK
+* Description: Returns \"Hello World!\"
+* Example URL: `https://example.com/`
+* Parameters:
+	+ None
+* Body: 
+	+ None
+* Headers: 
+	+ Content-Type: text/plain
+* Success Response:
+```
+{
+ \"message\": \"Hello World!\"
+}
+```Note: Since there are no other endpoints defined in the provided code snippet, there would be no additional API endpoint documentation. This response only applies to the single `/` endpoint defined in the original code."
 ]

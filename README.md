@@ -1,13 +1,22 @@
 # Documentation
 [
-This GitHub Actions workflow updates the README file with API data based on the changed files in a repository. Here are the detailed explanations of each endpoint:
+Here's an example of what the API endpoint documentation could look like:
 
-1. `GET /repos/{owner}/{repo}/commits/{commit_sha}`: Retrieves information about a specific commit, including its SHA.
+**API Endpoints**
 
-2. `POST /docs`: Updates the README file with API data based on the changed files in the repository. The request body contains the following fields: 
- - `repo_owner`: The owner of the repository.
- - `repo`: The name of the repository.
- - `files_changed`: An array of file names that have been modified.
+### GET /
+Returns \"Hello World! Test\".
 
-3. `PUT /docs`: Returns the updated README file with the API data.Note: These endpoints may not be publicly accessible due to authentication requirement
+#### Parameters:
+- None
+
+#### Request Body:
+- None
+
+#### Response:
+```
+{
+ \"message\": \"Hello World! Test\"
+}
+```Note: This response assumes a JSON format. If your API uses a different format, please let me know and I'll adjust accordingl
 ]

@@ -1,21 +1,13 @@
 # Documentation
 [
-  "Here's an example of what the API endpoint documentation might look like:
+This GitHub Actions workflow updates the README file with API data based on the changed files in a repository. Here are the detailed explanations of each endpoint:
 
-**GET /bin /imagegeneration /lost+found /mnt /run /sbin /snap Request Method: GET
-* Response Code: 200 OK
-* Description: Returns \"Hello World!\"
-* Example URL: `https://example.com/`
-* Parameters:
-	+ None
-* Body: 
-	+ None
-* Headers: 
-	+ Content-Type: text/plain
-* Success Response:
-```
-{
- \"message\": \"Hello World!\"
-}
-```Note: Since there are no other endpoints defined in the provided code snippet, there would be no additional API endpoint documentation. This response only applies to the single `/` endpoint defined in the original code."
+1. `GET /repos/{owner}/{repo}/commits/{commit_sha}`: Retrieves information about a specific commit, including its SHA.
+
+2. `POST /docs`: Updates the README file with API data based on the changed files in the repository. The request body contains the following fields: 
+ - `repo_owner`: The owner of the repository.
+ - `repo`: The name of the repository.
+ - `files_changed`: An array of file names that have been modified.
+
+3. `PUT /docs`: Returns the updated README file with the API data.Note: These endpoints may not be publicly accessible due to authentication requirement
 ]

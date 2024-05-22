@@ -27,12 +27,12 @@ jobs:
           });
           const changedFiles = commit.data.files.map(file => file.filename);
           console.log("Changed files: ", changedFiles);  // Print changed files for debugging
-          return { changedFiles: JSON.stringify(changedFiles) };
+          echo "changedFiles" >> $GITHUB_OUTPUT
 
     - name: Call the API
       id: call_api
       run: |
-        files_changed=${{ steps.get_changed_files.outputs.changedFiles }}
+        files_changed=${{ steps.get_changed_files.outputs.* }}
         echo "Files changed: $files_changed"  # Debugging step
         if [ -z "$files_changed" ]; then
           files_changed='[]'

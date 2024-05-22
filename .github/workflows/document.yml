@@ -64,7 +64,7 @@ jobs:
       run: |
         echo "# Documentation" > README.md
         # Remove the first three and last three characters from the file content
-        trimmed_content=$(sed 's/^..//' response.txt | sed 's/..$//')
+        trimmed_content=$(sed 's/^...//' response.txt | sed 's/..$//')
         echo "$trimmed_content" > response.txt
         while IFS= read -r line; do
           echo -e "$line" >> README.md

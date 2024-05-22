@@ -18,13 +18,13 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const { context } = require('@actions/github');
-          const changedFiles = await context.octokit.repos.listCommits({
+          const changedFiles = await github.rest.repos.listCommits({
             owner: context.repo.owner,
             repo: context.repo.repo,
             sha: context.sha
           }).then(commits => commits.data[0].files.map(file => file.filename));
-          return { changedFiles };
+          console.log("Changed files: ", changedFiles);
+          return { changedFiles: JSON.stringify(changedFiles) };
 
 
     - name: Call the API

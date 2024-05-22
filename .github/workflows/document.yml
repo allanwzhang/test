@@ -43,10 +43,11 @@ jobs:
     - name: Call the API
       id: call_api
       run: |
-        if [ -z "$files_changed" ]; then
+        if [ -f changedFiles.txt ]; then
+          files_changed=$(cat changedFiles.txt)
+        else
           files_changed='[]'
         fi
-        # Ensure files_changed is properly escaped and formatted as JSON
         files_changed=$(echo $files_changed | jq .)
         json_payload=$(jq -n \
           --arg repo_owner "${{ github.repository_owner }}" \
